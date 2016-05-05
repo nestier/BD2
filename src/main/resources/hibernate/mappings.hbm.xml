@@ -12,6 +12,20 @@
       <property name="nombre" column="nombre" type="string"/>
    </class>
    
+   <class name="Curso" table="Curso">
+      <id name="id" type="long" column="curso_id">
+        <generator class="native"/>
+      </id>
+      <property name="nombre" column="nombre" type="string"/>
+      <property name="nivel" column="nivel" type="int"/>
+    	<many-to-one class="Idioma" name="Idioma" unique="true"/>
+     <list name="lecciones" cascade="all">
+       <key column="curso_id" />  
+       <list-index column="idx"/>
+       <one-to-many class="Leccion"/>
+     </list>  
+   </class>
+
    <class name="Prueba" table="Prueba">
       <id name="id" type="long" column="prueba_id">
         <generator class="native"/>
@@ -139,10 +153,7 @@
          This class contains the sitio detail. 
       </meta>
       <id name="id" type="long" column="sitio_id">
-      
       </id>
-      <property name="nombre" column="nombre" type="string"/>
-      <property name="complejidad" column="complejidad" type="int"/>
       <list name="usuarios" cascade="all">
         <key column="sitio_id" />  
         <list-index column="idx"/>

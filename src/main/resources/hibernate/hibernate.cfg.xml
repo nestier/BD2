@@ -21,6 +21,7 @@
 		</property>
 
 		<!-- Colocar las referencias a los archivos de mapping en este punto -->
+    <mapping resource="hibernate/mappings.hbm.xml"/>
 
 	</session-factory>
 </hibernate-configuration>

@@ -1,12 +1,37 @@
 package bd2.model;
 
-import java.util.List;
-
+import java.util.ArrayList;
+import java.util.Collection;
+/**
+ * 
+ * Esta clase modela al sitio completo, el cual cuenta con una coleccion de usuarios,
+ * una coleccion de documentos, y una coleccion de cursos.
+ *
+ */
 public class Sitio {
 	
-	private List<Usuario> usuarios;
-	private List<Documento> documentos;
-	private List<Curso> cursos;
+	private Collection<Usuario> usuarios;
+	private Collection<Documento> documentos;
+	private Collection<Curso> cursos;
+	private Long id; 
+	/**
+	 * Constructor. 
+	 */	
+	public Sitio(){
+		this.setUsuarios();
+		this.setDocumentos();
+		this.setCursos();
+	}
+	/**
+	 * Getters y setters. 
+	 */
+	public long getId() {
+		return this.id;
+	}
+	
+	public void setId(long id) {
+		this.id = id; 
+	}
 	
 	public void registrarUsuario(Usuario usuario){
 		this.usuarios.add(usuario);
@@ -18,14 +43,23 @@ public class Sitio {
 		this.documentos.add(documento);
 	}
 	
-	public List<Usuario> getUsuarios() {
+	public Collection<Usuario> getUsuarios() {
 		return usuarios;
 	}
-	public List<Curso> getCursos() {
+	public Collection<Curso> getCursos() {
 		return cursos;
 	}
-	public List<Documento> getDocumentos() {
+	public Collection<Documento> getDocumentos() {
 		return documentos;
-	}	
+	}
+	public void setUsuarios() {
+		this.usuarios = new ArrayList<Usuario>();
+	}
+	public void setDocumentos() {
+		this.documentos = new ArrayList<Documento>();
+	}
+	public void setCursos() {
+		this.cursos = new ArrayList<Curso>();
+	}
 
 }

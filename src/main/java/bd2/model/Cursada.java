@@ -4,13 +4,30 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+/**
+ * 
+ * Esta clase tiene la finalidad de modelar una cursada correspondiente a un usuario, la misma 
+ * consta de un curso que se dicta, una fecha de inicio, y una coleccion de pruebas asociadas.
+ *
+ */
 public class Cursada {
 
 	private Curso curso;
 	private Collection<Prueba> pruebas;
 	private Usuario usuario;
 	private Date inicio;
+	private Long id; 
 
+	/**
+	 * Método constructor.
+	 * 
+	 * @param curso ; es el Curso asociado a la cursada.
+	 * @param inicio ; es un Date que marca el día de inicio de la cursada.
+	 * @param usuario ; es el Usuario que realiza la cursada
+	 */
+	public Cursada(){
+		
+	}
 	public Cursada(Curso curso, Date inicio, Usuario usuario) {
 		setCurso(curso);
 		setInicio(inicio);
@@ -19,6 +36,12 @@ public class Cursada {
 		usuario.agregarCursada(this);
 	}
 	
+	/**
+	 * Método que se encarga de informar si la cursada de encuentra aprobada,
+	 * es decir, si existe al menos una prueba aprobada para cada lección del curso.
+	 * 
+	 * @return true en caso de estar finalizada, false en caso contrario.
+	 */
 	public boolean finalizada(){
 		for (Leccion leccion : getCurso().getLecciones()) {
 			boolean aprobada = false;
@@ -31,6 +54,11 @@ public class Cursada {
 		return true;
 	}
 	
+	/**
+	 * Método que obtiene las lecciones del curso para las que existe una prueba aprobada.
+	 * @return una coleccion de lecciones aprobadas.
+	 */
+	
 	public Collection<Leccion> leccionesAprobadas(){
 		ArrayList<Leccion> leccionesAprobadas = new ArrayList<Leccion>();
 		for (Prueba prueba : getPruebas()) {
@@ -41,6 +69,10 @@ public class Cursada {
 		return leccionesAprobadas;
 	}
 
+	/**
+	 * Getters y setters. 
+	 */
+	
 	public void agregarPrueba(Prueba prueba) {
 		this.pruebas.add(prueba);
 	}
@@ -53,6 +85,14 @@ public class Cursada {
 		return getCurso().getNivel();
 	}
 
+	public long getId() {
+		return this.id;
+	}
+	
+	public void setId(long id) {
+		this.id = id; 
+	}
+	
 	public Date getInicio() {
 		return inicio;
 	}
