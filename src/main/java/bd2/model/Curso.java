@@ -16,7 +16,7 @@ public class Curso {
 	private Collection<Leccion> lecciones;
 	private String nombre;
 	private int nivel;
-	private Long id; 
+	private long id; 
 	
 	/**
 	 * Método constructor.
@@ -26,7 +26,7 @@ public class Curso {
 	 * @param nivel ; un int que es el nivel correspondiente al curso.
 	 */
 	public Curso(){
-		
+		setLecciones();
 	}
 	
 	public Curso(String nombre, Idioma idioma, int nivel){
@@ -39,6 +39,14 @@ public class Curso {
 	/**
 	 * Getters y setters. 
 	 */
+	public void setLecciones(Collection<Leccion> lecciones){
+		this.lecciones = lecciones;
+	}
+	
+	public void setLecciones(){
+		this.lecciones = new ArrayList<Leccion>();
+	}
+	
 	public long getId() {
 		return this.id;
 	}

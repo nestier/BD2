@@ -10,7 +10,7 @@ public class Idioma {
 
 	private Diccionario diccionario;
 	private String nombre;
-	private Long id; 
+	private long id; 
 	
 	/**
 	 * Método constructor.

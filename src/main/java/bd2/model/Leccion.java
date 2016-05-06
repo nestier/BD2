@@ -8,7 +8,7 @@ package bd2.model;
 public class Leccion {
 
 	private String nombre;
-	private Long id; 
+	private long id; 
 
 	/**
 	 * Método constructor

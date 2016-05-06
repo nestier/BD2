@@ -5,14 +5,14 @@
 
 <hibernate-mapping package="bd2.model">
 
-   <class name="Leccion" table="Leccion">
+   <class name="Leccion" table="leccion">
       <id name="id" type="long" column="leccion_id">
         <generator class="native"/>
       </id>
       <property name="nombre" column="nombre" type="string"/>
    </class>
    
-   <class name="Curso" table="Curso">
+   <class name="Curso" table="curso">
       <id name="id" type="long" column="curso_id">
         <generator class="native"/>
       </id>
@@ -26,7 +26,7 @@
      </list>  
    </class>
 
-   <class name="Prueba" table="Prueba">
+   <class name="Prueba" table="prueba">
       <id name="id" type="long" column="prueba_id">
         <generator class="native"/>
       </id>
@@ -34,7 +34,7 @@
       <property name="puntaje" column="puntaje" type="integer"/>
    </class>
 
-   <class name="Idioma" table="Idioma">
+   <class name="Idioma" table="idioma">
       <meta attribute="class-description">
          This class contains the idioma detail. 
       </meta>
@@ -45,7 +45,7 @@
       <many-to-one name="diccionario" column="diccionario" class="Diccionario" unique="true"/>
    </class>
 
-   <class name="Diccionario" table="Diccionario">
+   <class name="Diccionario" table="diccionario">
       <meta attribute="class-description">
          This class contains the diccionario detail. 
       </meta>
@@ -61,7 +61,7 @@
       <many-to-one name="idioma" column="idioma" class="Idioma" unique="true"/>
    </class>
 
-   <class name="Usuario" table="Usuario">
+   <class name="Usuario" table="usuario">
      <meta attribute="class-description">
        This class contains the documento detail. 
      </meta>
@@ -80,7 +80,7 @@
        <list-index column="idx"/>
        <one-to-many class="Cursada"/>
      </list>  
-     <joined-subclass name="Moderador" table="MODERADOR">
+     <joined-subclass name="Moderador" table="moderador">
        <key column="usuario_id"/>
        <list name="evaluaciones" cascade="all">
          <key column="moderador_id" />  
@@ -95,7 +95,7 @@
      </joined-subclass>
    </class>
 
-   <class name="Cursada" table="Cursada">
+   <class name="Cursada" table="cursada">
       <id name="id" type="long" column="cursada_id">
          <generator class="native"/>
       </id>
@@ -109,7 +109,7 @@
       </list>  
    </class>
 
-   <class name="Tarea" table="Tarea">
+   <class name="Tarea" table="tarea">
       <id name="id" type="long" column="tarea_id">
         <generator class="native"/>
       </id>
@@ -123,7 +123,7 @@
       </subclass>
    </class>
 
-   <class name="Parrafo" table="Parrafo">
+   <class name="Parrafo" table="parrafo">
       <id name="id" type="long" column="parrafo_id">
         <generator class="native"/>
       </id>
@@ -131,7 +131,7 @@
       <many-to-one name="documento" column="idioma" class="Idioma" unique="true"/>
    </class>
 
-   <class name="Documento" table="Documento">
+   <class name="Documento" table="documento">
       <meta attribute="class-description">
          This class contains the documento detail. 
       </meta>
@@ -148,7 +148,7 @@
      <many-to-one name="idioma" column="idioma" class="Idioma" unique="true"/>
    </class>
 
-   <class name="Sitio" table="Sitio">
+   <class name="Sitio" table="sitio">
       <meta attribute="class-description">
          This class contains the sitio detail. 
       </meta>

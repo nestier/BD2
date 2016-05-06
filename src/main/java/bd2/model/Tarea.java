@@ -13,7 +13,7 @@ public abstract class Tarea {
 	protected Date fecha;
 	protected String descripcion;
 	protected boolean completa;
-	private Long id; 
+	private long id; 
 	
 	/**
 	 * Método constructor que pone por default en false el atributo completa.
@@ -35,6 +35,10 @@ public abstract class Tarea {
 	
 	public void completar() {
 		this.completa = true;
+	}
+	
+	public void setCompleta(boolean completa ){
+		this.completa = completa;
 	}
 	
 	public Date getFecha() {

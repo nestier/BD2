@@ -18,7 +18,7 @@ public class Documento {
 	private Collection<Parrafo> parrafos;
 	private String nombre;
 	private Integer complejidad;
-	private Long id; 
+	private long id; 
 
 	/**
 	 * Método constructor.
@@ -27,7 +27,7 @@ public class Documento {
 	 * @param idioma ; es un Idioma que detalla el idioma del documento.
 	 */
 	public Documento(){
-		
+		setParrafos();
 	}
 	
 	public Documento(String nombre, Idioma idioma) {
@@ -39,6 +39,10 @@ public class Documento {
 	/**
 	 * Getters y setters. 
 	 */
+	
+	public void setParrafos(){
+		this.parrafos = new ArrayList<Parrafo>();
+	}
 	
 	public long getId() {
 		return this.id;

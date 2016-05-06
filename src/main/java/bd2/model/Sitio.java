@@ -13,7 +13,7 @@ public class Sitio {
 	private Collection<Usuario> usuarios;
 	private Collection<Documento> documentos;
 	private Collection<Curso> cursos;
-	private Long id; 
+	private long id; 
 	/**
 	 * Constructor. 
 	 */	
@@ -36,6 +36,16 @@ public class Sitio {
 	public void registrarUsuario(Usuario usuario){
 		this.usuarios.add(usuario);
 	}
+	public void setUsuarios(Collection<Usuario> usuarios){
+		this.usuarios = usuarios;
+	}
+	public void setCursos(Collection<Curso> cursos){
+		this.cursos = cursos;
+	}
+	public void setDocumentos(Collection<Documento> documentos){
+		this.documentos = documentos;
+	}
+
 	public void agregarCurso(Curso curso) {
 		this.cursos.add(curso);
 	}

@@ -9,7 +9,7 @@ public class Prueba {
 
 	private Leccion leccion;
 	private int puntaje;
-	private Long id; 
+	private long id; 
 
 	/**
 	 * Método constructor.

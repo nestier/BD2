@@ -16,7 +16,7 @@ public class Cursada {
 	private Collection<Prueba> pruebas;
 	private Usuario usuario;
 	private Date inicio;
-	private Long id; 
+	private long id; 
 
 	/**
 	 * Método constructor.
@@ -26,7 +26,7 @@ public class Cursada {
 	 * @param usuario ; es el Usuario que realiza la cursada
 	 */
 	public Cursada(){
-		
+      setPruebas();
 	}
 	public Cursada(Curso curso, Date inicio, Usuario usuario) {
 		setCurso(curso);
@@ -58,6 +58,7 @@ public class Cursada {
 	 * Método que obtiene las lecciones del curso para las que existe una prueba aprobada.
 	 * @return una coleccion de lecciones aprobadas.
 	 */
+
 	
 	public Collection<Leccion> leccionesAprobadas(){
 		ArrayList<Leccion> leccionesAprobadas = new ArrayList<Leccion>();
@@ -72,6 +73,13 @@ public class Cursada {
 	/**
 	 * Getters y setters. 
 	 */
+	public void setPruebas(Collection<Prueba> pruebas){
+		this.pruebas = pruebas;
+	}
+	
+	public void setPruebas(){
+		this.pruebas = new ArrayList<Prueba>();
+	}
 	
 	public void agregarPrueba(Prueba prueba) {
 		this.pruebas.add(prueba);

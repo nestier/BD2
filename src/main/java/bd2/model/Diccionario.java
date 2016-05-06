@@ -14,7 +14,7 @@ public class Diccionario {
 	private Idioma idioma;
 	private String edicion;
 	private Map<String, String> definiciones;
-	private Long id; 
+	private long id; 
 
 	/**
 	 * Método constructor.
@@ -51,6 +51,10 @@ public class Diccionario {
 	
 	public void setId(long id) {
 		this.id = id; 
+    }
+	
+	public void setDefiniciones(HashMap<String,String> definiciones){
+		this.definiciones = definiciones;
 	}
 	
 	public void agregarDefinicion(String key, String value) {
@@ -71,6 +75,10 @@ public class Diccionario {
 
 	public Map<String, String> getDefiniciones() {
 		return definiciones;
+	}
+	
+	public void setIdioma(Idioma idioma) {
+		this.idioma = idioma;
 	}
 
 	public Idioma getIdioma() {

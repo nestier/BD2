@@ -10,7 +10,7 @@ public class Parrafo {
 
 	private Documento documento;
 	private String texto;
-	private Long id; 
+	private long id; 
 
 	/**
 	 * Método constructor.

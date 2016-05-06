@@ -76,6 +76,21 @@ public class Moderador extends Usuario {
 	/**
 	 * Getters y setters. 
 	 */
+	public void setIdiomas(Collection<Idioma> Idiomas){
+		this.idiomas = Idiomas;
+	}
+	
+	public void setIdiomas(){
+		this.idiomas = new ArrayList<Idioma>();
+	}
+	public void setEvaluaciones(Collection<Evaluacion> evaluaciones){
+		this.evaluaciones = evaluaciones;
+	}
+	
+	public void setPruebas(){
+		this.evaluaciones = new ArrayList<Evaluacion>();
+	}
+	
 	
 	public void agregarIdioma(Idioma idioma) {
 		this.idiomas.add(idioma);

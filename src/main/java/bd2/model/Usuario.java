@@ -18,7 +18,7 @@ public class Usuario {
 	protected Date fechaDeCreacion;
 	protected Collection<Traduccion> traducciones;
 	protected Collection<Cursada> cursadasRealizadas;
-	private Long id; 
+	private long id; 
 
 	/**
 	 * Método constructor.
