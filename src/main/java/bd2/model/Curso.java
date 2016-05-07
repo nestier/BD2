@@ -26,7 +26,6 @@ public class Curso {
 	 * @param nivel ; un int que es el nivel correspondiente al curso.
 	 */
 	public Curso(){
-		setLecciones();
 	}
 	
 	public Curso(String nombre, Idioma idioma, int nivel){

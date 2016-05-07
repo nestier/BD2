@@ -8,8 +8,8 @@ package bd2.model;
  */
 public class Parrafo {
 
-	private Documento documento;
-	private String texto;
+	protected Documento documento;
+	protected String texto;
 	private long id; 
 
 	/**

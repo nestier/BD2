@@ -18,9 +18,9 @@ public class Sitio {
 	 * Constructor. 
 	 */	
 	public Sitio(){
-		this.setUsuarios();
-		this.setDocumentos();
-		this.setCursos();
+		this.usuarios = new ArrayList<Usuario>();
+		this.documentos = new ArrayList<Documento>();
+		this.cursos = new ArrayList<Curso>();
 	}
 	/**
 	 * Getters y setters. 
@@ -62,14 +62,4 @@ public class Sitio {
 	public Collection<Documento> getDocumentos() {
 		return documentos;
 	}
-	public void setUsuarios() {
-		this.usuarios = new ArrayList<Usuario>();
-	}
-	public void setDocumentos() {
-		this.documentos = new ArrayList<Documento>();
-	}
-	public void setCursos() {
-		this.cursos = new ArrayList<Curso>();
-	}
-
 }

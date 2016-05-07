@@ -21,7 +21,7 @@
     	<many-to-one class="Idioma" name="idioma" not-null="true"/>
      <list name="lecciones" cascade="all" >
        <key column="curso_id" />  
-       <list-index column="id"/>
+       <list-index column="idx"/>
        <one-to-many class="Leccion"/>
      </list>  
    </class>
@@ -54,9 +54,9 @@
       </id>
       <property name="edicion" column="edicion" type="string"/>
       <map name="definiciones" table="diccionario_definiciones" cascade="all">  
-        <key column="diccionario_id"></key> 
-        <index column="index" type="string"></index>  
-        <element column="element" type="string"></element>  
+          <key column="idx"></key> 
+          <index column="palabra" type="string"></index>  
+          <element column="definicion" type="string"></element>  
       </map>  
       <many-to-one name="idioma" class="Idioma" unique="true" not-null="true"/>
    </class>
@@ -66,30 +66,31 @@
        This class contains the documento detail. 
      </meta>
      <id name="id" type="long" column="usuario_id">
+         <generator class="native"/>
      </id>
      <property name="nombre" column="nombre" type="string"/>
      <property name="email" column="email" type="string"/>
      <property name="fechaDeCreacion" column="fechaDeCreacion" type="date"/>
      <list name="traducciones" cascade="all">
        <key column="usuario_id" />  
-       <list-index column="id"/>
+       <list-index column="idx"/>
        <one-to-many class="Traduccion"/>
      </list>  
      <list name="cursadasRealizadas" cascade="all">
        <key column="usuario_id" />  
-       <list-index column="id"/>
+       <list-index column="idx"/>
        <one-to-many class="Cursada"/>
      </list>  
      <joined-subclass name="Moderador" table="moderador">
        <key column="usuario_id"/>
        <list name="evaluaciones" cascade="all">
          <key column="moderador_id" />  
-         <list-index column="id"/>
+         <list-index column="idx"/>
          <one-to-many class="Evaluacion"/>
        </list>  
        <list name="idiomas" cascade="all">
          <key column="moderador_id" />  
-         <list-index column="id"/>
+         <list-index column="idx"/>
          <one-to-many class="Idioma"/>
        </list>  
      </joined-subclass>
@@ -101,9 +102,10 @@
       </id>
       <property name="inicio" column="inicio" type="date"/>
     	<many-to-one class="Curso" name="curso" unique="false" not-null="true"/>
+    	<many-to-one class="Usuario" name="usuario" unique="true" not-null="true"/>
       <list name="pruebas" cascade="all">
         <key column="cursada_id" />  
-        <list-index column="id"/>
+        <list-index column="idx"/>
 	      <one-to-many class="Prueba"/>
       </list>  
    </class>
@@ -130,7 +132,7 @@
       <id name="id" type="long" column="parrafo_id">
         <generator class="native"/>
       </id>
-      <property name="texto" column="texto" type="string"/>
+      <property name="texto" type="text"/>
    </class>
 
    <class name="Documento" table="documento">
@@ -138,13 +140,13 @@
          This class contains the documento detail. 
       </meta>
       <id name="id" type="long" column="documento_id">
-      
+         <generator class="native"/>
       </id>
       <property name="nombre" column="nombre" type="string"/>
       <property name="complejidad" column="complejidad" type="int"/>
       <list name="parrafos" cascade="all">
         <key column="documento_id" />  
-        <list-index column="id"/>
+        <list-index column="idx"/>
       	<one-to-many class="Parrafo"/>
       </list>  
      <many-to-one name="idioma" column="idioma" class="Idioma" cascade="all" not-null="true"/>
@@ -155,20 +157,21 @@
          This class contains the sitio detail. 
       </meta>
       <id name="id" type="long" column="sitio_id">
+         <generator class="native"/>
       </id>
       <list name="usuarios" cascade="all">
         <key column="sitio_id" />  
-        <list-index column="id"/>
+        <list-index column="idx"/>
       	<one-to-many class="Usuario"/>
       </list>  
       <list name="documentos" cascade="all">
         <key column="sitio_id" />  
-        <list-index column="id"/>
+        <list-index column="idx"/>
       	<one-to-many class="Documento"/>
       </list>  
       <list name="cursos" cascade="all">
         <key column="sitio_id" />  
-        <list-index column="id"/>
+        <list-index column="idx"/>
       	<one-to-many class="Curso"/>
       </list>  
    </class>

@@ -27,7 +27,6 @@ public class Documento {
 	 * @param idioma ; es un Idioma que detalla el idioma del documento.
 	 */
 	public Documento(){
-		setParrafos();
 	}
 	
 	public Documento(String nombre, Idioma idioma) {

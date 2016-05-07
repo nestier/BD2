@@ -23,6 +23,8 @@ public class Moderador extends Usuario {
 	 * @param fechaDeCreacion ; un Date que hace de fecha de creación, atributo heredado.
 	 */
 	public Moderador() {
+	  this.idiomas = new ArrayList<Idioma>();
+	  this.evaluaciones = new ArrayList<Evaluacion>();
 	}
 	
 	public Moderador(String email, String nombre, Date fechaDeCreacion) {
