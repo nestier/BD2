@@ -53,7 +53,11 @@ public class Diccionario {
 		this.id = id; 
     }
 	
-	public void setDefiniciones(HashMap<String,String> definiciones){
+	public Map<String, String> getDefiniciones() {
+		return definiciones;
+	}
+
+	public void setDefiniciones(Map<String, String> definiciones) {
 		this.definiciones = definiciones;
 	}
 	
@@ -71,10 +75,6 @@ public class Diccionario {
 
 	public String definicion(String key) {
 		return definiciones.get(key);
-	}
-
-	public Map<String, String> getDefiniciones() {
-		return definiciones;
 	}
 	
 	public void setIdioma(Idioma idioma) {

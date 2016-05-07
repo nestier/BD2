@@ -26,7 +26,7 @@ public class Cursada {
 	 * @param usuario ; es el Usuario que realiza la cursada
 	 */
 	public Cursada(){
-      setPruebas();
+
 	}
 	public Cursada(Curso curso, Date inicio, Usuario usuario) {
 		setCurso(curso);

@@ -18,10 +18,10 @@
       </id>
       <property name="nombre" column="nombre" type="string"/>
       <property name="nivel" column="nivel" type="int"/>
-    	<many-to-one class="Idioma" name="Idioma" unique="true"/>
-     <list name="lecciones" cascade="all">
+    	<many-to-one class="Idioma" name="idioma" not-null="true"/>
+     <list name="lecciones" cascade="all" >
        <key column="curso_id" />  
-       <list-index column="idx"/>
+       <list-index column="id"/>
        <one-to-many class="Leccion"/>
      </list>  
    </class>
@@ -30,7 +30,7 @@
       <id name="id" type="long" column="prueba_id">
         <generator class="native"/>
       </id>
-    	<many-to-one class="Leccion" name="leccion" unique="true"/>
+      <many-to-one class="Leccion" name="leccion" cascade="all" not-null="true"/>
       <property name="puntaje" column="puntaje" type="integer"/>
    </class>
 
@@ -42,7 +42,7 @@
          <generator class="native"/>
       </id>
       <property name="nombre" column="nombre" type="string"/>
-      <many-to-one name="diccionario" column="diccionario" class="Diccionario" unique="true"/>
+      <many-to-one name="diccionario" class="Diccionario" cascade="all" unique="true"/>
    </class>
 
    <class name="Diccionario" table="diccionario">
@@ -53,12 +53,12 @@
          <generator class="native"/>
       </id>
       <property name="edicion" column="edicion" type="string"/>
-      <map name="definiciones" table="DEFINICIONES" cascade="all">  
+      <map name="definiciones" table="diccionario_definiciones" cascade="all">  
         <key column="diccionario_id"></key> 
         <index column="index" type="string"></index>  
         <element column="element" type="string"></element>  
       </map>  
-      <many-to-one name="idioma" column="idioma" class="Idioma" unique="true"/>
+      <many-to-one name="idioma" class="Idioma" unique="true" not-null="true"/>
    </class>
 
    <class name="Usuario" table="usuario">
@@ -72,24 +72,24 @@
      <property name="fechaDeCreacion" column="fechaDeCreacion" type="date"/>
      <list name="traducciones" cascade="all">
        <key column="usuario_id" />  
-       <list-index column="idx"/>
+       <list-index column="id"/>
        <one-to-many class="Traduccion"/>
      </list>  
      <list name="cursadasRealizadas" cascade="all">
        <key column="usuario_id" />  
-       <list-index column="idx"/>
+       <list-index column="id"/>
        <one-to-many class="Cursada"/>
      </list>  
      <joined-subclass name="Moderador" table="moderador">
        <key column="usuario_id"/>
        <list name="evaluaciones" cascade="all">
          <key column="moderador_id" />  
-         <list-index column="idx"/>
+         <list-index column="id"/>
          <one-to-many class="Evaluacion"/>
        </list>  
        <list name="idiomas" cascade="all">
          <key column="moderador_id" />  
-         <list-index column="idx"/>
+         <list-index column="id"/>
          <one-to-many class="Idioma"/>
        </list>  
      </joined-subclass>
@@ -100,11 +100,10 @@
          <generator class="native"/>
       </id>
       <property name="inicio" column="inicio" type="date"/>
-    	<many-to-one class="Curso" name="curso" unique="true"/>
-    	<many-to-one class="Usuario" name="usuario" unique="true" />
+    	<many-to-one class="Curso" name="curso" unique="false" not-null="true"/>
       <list name="pruebas" cascade="all">
         <key column="cursada_id" />  
-        <list-index column="idx"/>
+        <list-index column="id"/>
 	      <one-to-many class="Prueba"/>
       </list>  
    </class>
@@ -117,9 +116,13 @@
       <property name="fecha" column="fecha" type="date"/>
       <property name="descripcion" column="descripcion" type="string"/>
       <property name="completa" column="completa" type="boolean"/>
-      <subclass name='Traduccion' discriminator-value='TRADUCCION'>
+      <subclass name='Traduccion' discriminator-value='TRA'>
+        <property name="texto" type="text" />
+        <many-to-one name="parrafo" column="parrafo_id" cascade="all" />
+        <many-to-one name="idioma" column="idioma_id" cascade="all" />
       </subclass>
-      <subclass name='Evaluacion' discriminator-value='EVALUACION'>
+      <subclass name='Evaluacion' discriminator-value='EVA'>
+        <many-to-one name="traduccion" column="traduccion_id" cascade="all" />
       </subclass>
    </class>
 
@@ -128,7 +131,6 @@
         <generator class="native"/>
       </id>
       <property name="texto" column="texto" type="string"/>
-      <many-to-one name="documento" column="idioma" class="Idioma" unique="true"/>
    </class>
 
    <class name="Documento" table="documento">
@@ -142,10 +144,10 @@
       <property name="complejidad" column="complejidad" type="int"/>
       <list name="parrafos" cascade="all">
         <key column="documento_id" />  
-        <list-index column="idx"/>
+        <list-index column="id"/>
       	<one-to-many class="Parrafo"/>
       </list>  
-     <many-to-one name="idioma" column="idioma" class="Idioma" unique="true"/>
+     <many-to-one name="idioma" column="idioma" class="Idioma" cascade="all" not-null="true"/>
    </class>
 
    <class name="Sitio" table="sitio">
@@ -156,17 +158,17 @@
       </id>
       <list name="usuarios" cascade="all">
         <key column="sitio_id" />  
-        <list-index column="idx"/>
+        <list-index column="id"/>
       	<one-to-many class="Usuario"/>
       </list>  
       <list name="documentos" cascade="all">
         <key column="sitio_id" />  
-        <list-index column="idx"/>
+        <list-index column="id"/>
       	<one-to-many class="Documento"/>
       </list>  
       <list name="cursos" cascade="all">
         <key column="sitio_id" />  
-        <list-index column="idx"/>
+        <list-index column="id"/>
       	<one-to-many class="Curso"/>
       </list>  
    </class>
