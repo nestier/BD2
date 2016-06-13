@@ -88,11 +88,6 @@
          <list-index column="idx"/>
          <one-to-many class="Evaluacion"/>
        </list>  
-       <list name="idiomas" cascade="all">
-         <key column="moderador_id" />  
-         <list-index column="idx"/>
-         <one-to-many class="Idioma"/>
-       </list>  
      </joined-subclass>
    </class>
 
@@ -102,7 +97,6 @@
       </id>
       <property name="inicio" column="inicio" type="date"/>
     	<many-to-one class="Curso" name="curso" unique="false" not-null="true"/>
-    	<many-to-one class="Usuario" name="usuario" unique="true" not-null="true"/>
       <list name="pruebas" cascade="all">
         <key column="cursada_id" />  
         <list-index column="idx"/>
