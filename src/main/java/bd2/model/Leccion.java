@@ -28,7 +28,7 @@ public class Leccion {
 	 */
 	@Override
 	public boolean equals(Object o){
-		if ((o instanceof Leccion) && ((Leccion) o).getNombre() == this.getNombre()){
+		if ((o instanceof Leccion) && ((Leccion) o).getNombre().equals(this.getNombre())){
 			return true;
 		}else{
 			return false;

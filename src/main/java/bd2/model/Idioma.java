@@ -31,7 +31,7 @@ public class Idioma {
 	 */
 	@Override
 	public boolean equals(Object o){
-		if ((o instanceof Idioma) && ((Idioma) o).getNombre() == this.getNombre()){
+		if ((o instanceof Idioma) && ((Idioma) o).getNombre().equals(this.getNombre())){
 			return true;
 		}else{
 			return false;

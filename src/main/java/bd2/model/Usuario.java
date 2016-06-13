@@ -18,7 +18,7 @@ public class Usuario {
 	protected Date fechaDeCreacion;
 	protected Collection<Traduccion> traducciones;
 	protected Collection<Cursada> cursadasRealizadas;
-	private long id; 
+	protected long id; 
 
 	/**
 	 * Método constructor.
@@ -28,7 +28,8 @@ public class Usuario {
 	 * @param fechaDeCreacion ; un Date que especifica la fechad de creacion del usuario.
 	 */
 	public Usuario(){
-		
+		setCursadasRealizadas(new ArrayList<Cursada>());
+		setTraducciones(new ArrayList<Traduccion>());
 	}
 	
 	public Usuario(String email, String nombre, Date fechaDeCreacion) {

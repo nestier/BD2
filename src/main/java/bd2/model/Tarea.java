@@ -13,7 +13,7 @@ public abstract class Tarea {
 	protected Date fecha;
 	protected String descripcion;
 	protected boolean completa;
-	private long id; 
+	protected long id; 
 	
 	/**
 	 * Método constructor que pone por default en false el atributo completa.
