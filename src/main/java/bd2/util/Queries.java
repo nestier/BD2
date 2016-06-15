@@ -34,6 +34,7 @@ private static SessionFactory sessions;
 			fechaFin.set(2015, 12, 31);
 			ejecutarConsultaD(session, fechaInicio.getTime(), fechaFin.getTime());
 			ejecutarConsultaE(session);
+			ejecutarConsultaF(session);
 			
 		} catch (Exception e) {
 					e.printStackTrace();
@@ -169,6 +170,38 @@ private static SessionFactory sessions;
 			session.flush();
 			for (String descripcion: descripciones) {
 				System.out.println("Nombre: "+descripcion);
+			}
+			System.out.println();
+		
+		} catch (HibernateException e) {
+				e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (tx != null) {
+				tx.rollback();}
+		}
+	}
+	private static void ejecutarConsultaF(Session session) {
+		Transaction tx = null;
+		System.out.println("F.	Obtener los emails de los usuarios con alguna cursada aprobada.");
+
+		Query query = session.createQuery("select usuario from "+Usuario.class.getName()+" usuario "
+				+ " join usuario.cursadasRealizadas cursadasRealizadas "
+				+ " where cursadasRealizadas.id = any ( "
+				+ "	select id from "+Cursada.class.getName()+" cursada " 
+				+ " where size(cursada.curso.lecciones) = ( "
+				+ "	select count( distinct prueba.leccion) from "+Prueba.class.getName()+" prueba "
+						+ " where prueba.puntaje >= 60 "
+						+ " and prueba in elements(cursada.pruebas) )  "
+				+ ") ");
+
+		try {
+			tx = session.beginTransaction();
+			List<Usuario> usuarios = query.list();
+			tx.commit();
+			session.flush();
+			for (Usuario usuario: usuarios) {
+				System.out.println("Usuario con cursada aprobada: "+usuario.getEmail());
 			}
 			System.out.println();
 		
