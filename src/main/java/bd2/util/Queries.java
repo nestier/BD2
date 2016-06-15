@@ -1,6 +1,8 @@
 package bd2.util;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -25,6 +27,13 @@ private static SessionFactory sessions;
 		try {
 			ejecutarConsultaA(session);
 			ejecutarConsultaB(session);
+			ejecutarConsultaC(session);
+			Calendar fechaInicio = Calendar.getInstance();
+			fechaInicio.set(2015, 7, 1);			
+			Calendar fechaFin = Calendar.getInstance();
+			fechaFin.set(2015, 12, 31);
+			//ejecutarConsultaD(session, fechaInicio.getTime(), fechaFin.getTime());
+			ejecutarConsultaE(session);
 			
 		} catch (Exception e) {
 					e.printStackTrace();
@@ -85,6 +94,91 @@ private static SessionFactory sessions;
 				tx.rollback();}
 		}
 	}
-	
+	private static void ejecutarConsultaC(Session session) {
+		Transaction tx = null;
+		System.out.println("C.	Listar los usuarios que hayan iniciado una cursada de Francés de nivel 3 como mínimo.");
+
+		Query query = session.createQuery("select new Usuario(email, nombre, fechaDeCreacion) from "+Usuario.class.getName()+" usuario"
+				+ " where exists ( from "+Cursada.class.getName()+" cursada"
+				+ " where cursada in elements(usuario.cursadasRealizadas) "
+				+ " and cursada.curso.idioma.nombre = 'Francés' "
+				+ " and cursada.curso.nivel >= 3) ");
+
+		try {
+			tx = session.beginTransaction();
+			List<Usuario> usuarios = query.list();
+			tx.commit();
+			session.flush();
+			for (Usuario usuario: usuarios) {
+				System.out.println("Nombre: "+usuario.getNombre());
+			}
+			System.out.println();
+		
+		} catch (HibernateException e) {
+				e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (tx != null) {
+				tx.rollback();}
+		}
+	}
+	private static void ejecutarConsultaD(Session session, Date fechaInicio, Date fechaFin) {
+		Transaction tx = null;
+		System.out.println("C.	Listar moderadores que hayan revisado alguna traducción entre dos fechas pasadas como argumento.");
+
+		Query query = session.createQuery("select new Moderador(email, nombre, fechaDeCreacion) "
+				+ " from "+Moderador.class.getName()+" moderador "
+				+ " join moderador.evaluaciones evaluacionModerador "
+				+ " where evaluacionModerador.id in "
+				+ " ( from "+Evaluacion.class.getName()+" evaluacion "
+						+ " where evaluacion.fecha between :fechaInicio and :fechaFin) ");
+
+		try {
+			tx = session.beginTransaction();
+			List<Moderador> moderadores = query.list();
+			tx.commit();
+			session.flush();
+			for (Moderador moderador: moderadores) {
+				System.out.println("Nombre: "+moderador.getNombre());
+			}
+			System.out.println();
+		
+		} catch (HibernateException e) {
+				e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (tx != null) {
+				tx.rollback();}
+		}
+	}
+	private static void ejecutarConsultaE(Session session) {
+		Transaction tx = null;
+		System.out.println("E.	Listar traducciones completas del Inglés al Francés.");
+
+		Query query = session.createQuery("select descripcion from "+Tarea.class.getName()+" traduccion"
+				+ " where traduccion.idioma.nombre = 'Francés' "
+				+ " and traduccion.completa = true "
+				+ " and exists ( from "+Parrafo.class.getName()+" parrafo "
+						+ " where parrafo.documento.idioma.nombre = 'Inglés'"
+						+ " and parrafo.id = traduccion.parrafo.id) ");
+
+		try {
+			tx = session.beginTransaction();
+			List<String> descripciones = query.list();
+			tx.commit();
+			session.flush();
+			for (String descripcion: descripciones) {
+				System.out.println("Nombre: "+descripcion);
+			}
+			System.out.println();
+		
+		} catch (HibernateException e) {
+				e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (tx != null) {
+				tx.rollback();}
+		}
+	}
 
 }
