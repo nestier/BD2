@@ -32,7 +32,7 @@ private static SessionFactory sessions;
 			fechaInicio.set(2015, 7, 1);			
 			Calendar fechaFin = Calendar.getInstance();
 			fechaFin.set(2015, 12, 31);
-			//ejecutarConsultaD(session, fechaInicio.getTime(), fechaFin.getTime());
+			ejecutarConsultaD(session, fechaInicio.getTime(), fechaFin.getTime());
 			ejecutarConsultaE(session);
 			
 		} catch (Exception e) {
@@ -98,7 +98,7 @@ private static SessionFactory sessions;
 		Transaction tx = null;
 		System.out.println("C.	Listar los usuarios que hayan iniciado una cursada de Francés de nivel 3 como mínimo.");
 
-		Query query = session.createQuery("select new Usuario(email, nombre, fechaDeCreacion) from "+Usuario.class.getName()+" usuario"
+		Query query = session.createQuery("select usuario from "+Usuario.class.getName()+" usuario"
 				+ " where exists ( from "+Cursada.class.getName()+" cursada"
 				+ " where cursada in elements(usuario.cursadasRealizadas) "
 				+ " and cursada.curso.idioma.nombre = 'Francés' "
@@ -125,14 +125,14 @@ private static SessionFactory sessions;
 	private static void ejecutarConsultaD(Session session, Date fechaInicio, Date fechaFin) {
 		Transaction tx = null;
 		System.out.println("C.	Listar moderadores que hayan revisado alguna traducción entre dos fechas pasadas como argumento.");
-
-		Query query = session.createQuery("select new Moderador(email, nombre, fechaDeCreacion) "
+		System.out.println("Resultado para los parámetros: "+fechaInicio+" hasta "+fechaFin);
+		Query query = session.createQuery("select distinct moderador "
 				+ " from "+Moderador.class.getName()+" moderador "
 				+ " join moderador.evaluaciones evaluacionModerador "
 				+ " where evaluacionModerador.id in "
 				+ " ( from "+Evaluacion.class.getName()+" evaluacion "
-						+ " where evaluacion.fecha between :fechaInicio and :fechaFin) ");
-
+						+ " where evaluacion.fecha between :fechaInicio and :fechaFin) ")
+						.setParameter("fechaInicio", fechaInicio).setParameter("fechaFin", fechaFin);
 		try {
 			tx = session.beginTransaction();
 			List<Moderador> moderadores = query.list();
