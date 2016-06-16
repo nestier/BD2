@@ -35,6 +35,7 @@ private static SessionFactory sessions;
 			ejecutarConsultaD(session, fechaInicio.getTime(), fechaFin.getTime());
 			ejecutarConsultaE(session);
 			ejecutarConsultaF(session);
+			ejecutarConsultaG(session, "Leuchtturm");
 			
 		} catch (Exception e) {
 					e.printStackTrace();
@@ -213,5 +214,34 @@ private static SessionFactory sessions;
 				tx.rollback();}
 		}
 	}
+	private static void ejecutarConsultaG(Session session, String palabra) {
+		Transaction tx = null;
+		System.out.println("G.	Obtener el nombre del idioma que define la palabra enviada como parámetro en su diccionario.");
+		System.out.println("Resultado para el parámetro: "+palabra);
+		Query query = session.createQuery("select idioma from "+Idioma.class.getName()+" idioma "
+				+ " where exists ( "
+				+ "	from "+Diccionario.class.getName()+" diccionario " 
+				+ " join diccionario.definiciones definiciones"
+				+ " where index(definiciones) = :palabra"
+				+ " and diccionario.idioma.id = idioma.id )").setParameter("palabra", palabra);
 
+		try {
+			tx = session.beginTransaction();
+			List<Idioma> idiomas = query.list();
+			tx.commit();
+			session.flush();
+			for (Idioma idioma: idiomas) {
+				System.out.println("El idioma "+idioma.getNombre()+" define la palabra "+palabra);
+			}
+			System.out.println();
+		
+		} catch (HibernateException e) {
+				e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (tx != null) {
+				tx.rollback();}
+		}
+	}
+	
 }
