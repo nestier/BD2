@@ -224,8 +224,7 @@ private static SessionFactory sessions;
 		Query query = session.createQuery("select idioma from "+Idioma.class.getName()+" idioma "
 				+ " where exists ( "
 				+ "	from "+Diccionario.class.getName()+" diccionario " 
-				+ " join diccionario.definiciones definiciones"
-				+ " where index(definiciones) = :palabra"
+				+ " where :palabra in indices(diccionario.definiciones)"
 				+ " and diccionario.idioma.id = idioma.id )").setParameter("palabra", palabra);
 
 		try {
