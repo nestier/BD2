@@ -191,26 +191,23 @@ private static SessionFactory sessions;
 		Transaction tx = null;
 		System.out.println("F.	Obtener los emails de los usuarios con alguna cursada aprobada.");
 
-		/*Query query = session.createQuery("select usuario from "+Usuario.class.getName()+" usuario "
-				+ " join usuario.cursadasRealizadas cursadasRealizadas "
-				+ " where cursadasRealizadas.id = any ( "
-				+ "	select id from "+Cursada.class.getName()+" cursada " 
-				+ " where size(cursada.curso.lecciones) = ( "
-				+ "	select count( distinct prueba.leccion) from "+Prueba.class.getName()+" prueba "
-						+ " where prueba.puntaje >= 60 "
-						+ " and prueba in elements(cursada.pruebas) )  "
-				+ ") ");*/
 		Query query = session.createQuery(" from Usuario u "
 				+ " where exists ( "
 				+ " from Cursada cursada"
 				+ " where cursada in elements(u.cursadasRealizadas)"
-				+ " and cursada.id = any ( "
-					+ "	select id from Cursada cursada " 
-					+ " where size(cursada.curso.lecciones) = ( "
-					+ "	select count( distinct prueba.leccion) from Prueba prueba "
-							+ " where prueba.puntaje >= 60 "
-							+ " and prueba in elements(cursada.pruebas) )  "
-				+ ") )");
+				+ " and not exists ( "
+					+ "	from Leccion l "
+					+ " where l in elements(cursada.curso.lecciones) "
+					+ " and l not in ( "
+						+ " from Leccion l2 "
+						+ " where exists ( "
+							+ " from Prueba p "
+							+ " where p.puntaje >= 60 "
+							+ " and p.leccion = l2 "
+							+ " and p in elements(cursada.pruebas)"
+							+ " and p.leccion in elements(cursada.curso.lecciones) )  "
+				+ ") ) )");
+
 
 		try {
 			tx = session.beginTransaction();
