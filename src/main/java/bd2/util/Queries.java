@@ -15,10 +15,20 @@ import org.hibernate.cfg.Configuration;
 
 import bd2.model.*;
 
+/**
+ * Clase que implementa todas las consultas solicitadas por la cátedra.
+ *
+ */
 public class Queries {
 	
-private static SessionFactory sessions;
+	private static SessionFactory sessions;
 	
+	/**
+	 * Método Main que realiza el llamado a todas las consultas implementadas, pasándole el objeto
+	 * 	Session "abierto" con la configuración de hibernate por parámetro y añadiendo parámetros 
+	 * 	de prueba para aquellas consultas que así lo requieren.
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		Configuration cfg = new Configuration();
 		cfg.configure("hibernate/hibernate.cfg.xml");
@@ -47,6 +57,11 @@ private static SessionFactory sessions;
 		session.disconnect() ;}
 	}
 
+	/**
+	 * Método que se encarga de obtener y listar los nombres de todos los documentos
+	 * @param session
+	 * 				| Objeto SessionFactory con la sesion de hibernate abierta
+	 */
 	private static void ejecutarConsultaA(Session session) {
 		Transaction tx = null;
 		System.out.println("A.	Listar los nombres de todos los documentos ");
@@ -71,6 +86,13 @@ private static SessionFactory sessions;
 				tx.rollback();}
 		}
 	}
+	
+	/**
+	 * Método que se encarga de obtener y listar los emails de los moderadores que hayan 
+	 * 	evaluado traducciones al Inglés
+	 * @param session
+	 * 				| Objeto SessionFactory con la sesion de hibernate abierta
+	 */
 	private static void ejecutarConsultaB(Session session) {
 		Transaction tx = null;
 		System.out.println("B.	Listar los emails de los moderadores que hayan evaluado traducciones al inglés.");
@@ -98,6 +120,13 @@ private static SessionFactory sessions;
 				tx.rollback();}
 		}
 	}
+	
+	/**
+	 * Método que se encarga de obtener y listar los usuarios que hayan iniciado una cursada
+	 * 	de Francés de nivel 3 como mínimo.
+	 * @param session
+	 * 				| Objeto SessionFactory con la sesion de hibernate abierta
+	 */
 	private static void ejecutarConsultaC(Session session) {
 		Transaction tx = null;
 		System.out.println("C.	Listar los usuarios que hayan iniciado una cursada de Francés de nivel 3 como mínimo.");
@@ -126,6 +155,17 @@ private static SessionFactory sessions;
 				tx.rollback();}
 		}
 	}
+	
+	/**
+	 * Método que se encarga de obtener y listar los moderadores que hayan revisado alguna
+	 * 	traducción entre las dos fechas recibidas por parámetro
+	 * @param session
+	 * 				| Objeto SessionFactory con la sesion de hibernate abierta
+	 * @param fechaInicio
+	 * 				| Objeto Date que representa la fecha de inicio del intervalo a consultar
+	 * @param fechaFin
+	 * 				| Objeto Date que representa la fecha de fin del intervalo a consultar
+	 */
 	private static void ejecutarConsultaD(Session session, Date fechaInicio, Date fechaFin) {
 		Transaction tx = null;
 		System.out.println("D.	Listar moderadores que hayan revisado alguna traducción entre dos fechas pasadas como argumento.");
@@ -153,21 +193,22 @@ private static SessionFactory sessions;
 				tx.rollback();}
 		}
 	}
+	
+	/**
+	 * Método que se encarga de obtener y listar las traducciones completas del idioma Inglés al Francés
+	 * @param session
+	 * 				| Objeto SessionFactory con la sesion de hibernate abierta
+	 */
 	private static void ejecutarConsultaE(Session session) {
 		Transaction tx = null;
 		System.out.println("E.	Listar traducciones completas del Inglés al Francés.");
 
-        // Query query = session.createQuery("from Tarea t "
-        //     + " where t.idioma.nombre = 'Francés' "
-        //     + " and t.parrafo.documento.idioma.nombre = 'Inglés' "
-        //     + " and t.completa = true");
         Query query = session.createQuery("select descripcion from Tarea traduccion"
             + " where traduccion.idioma.nombre = 'Francés' "
             + " and traduccion.completa = true "
             + " and exists ( from Parrafo parrafo "
             + " where parrafo.documento.idioma.nombre = 'Inglés'"
             + " and parrafo.id = traduccion.parrafo.id) ");
-
 
 		try {
 			tx = session.beginTransaction();
@@ -187,6 +228,13 @@ private static SessionFactory sessions;
 				tx.rollback();}
 		}
 	}
+	
+	/**
+	 * Método que se encarga de obtener los usuarios con alguna cursada aprobada y 
+	 * 	listar sus emails.
+	 * @param session
+	 * 				| Objeto SessionFactory con la sesion de hibernate abierta
+	 */
 	private static void ejecutarConsultaF(Session session) {
 		Transaction tx = null;
 		System.out.println("F.	Obtener los emails de los usuarios con alguna cursada aprobada.");
@@ -227,6 +275,15 @@ private static SessionFactory sessions;
 				tx.rollback();}
 		}
 	}
+	
+	/**
+	 * Método que se encarga de obtener el idioma que define la palabra recibida por parámetro
+	 * 	en su diccionario e imprimir su nombre.
+	 * @param session
+	 * 				| Objeto SessionFactory con la sesion de hibernate abierta
+	 * @param palabra
+	 * 				| Un String que es la palabra para realizar la busqueda de su idioma
+	 */
 	private static void ejecutarConsultaG(Session session, String palabra) {
 		Transaction tx = null;
 		System.out.println("G.	Obtener el nombre del idioma que define la palabra enviada como parámetro en su diccionario.");
@@ -256,6 +313,12 @@ private static SessionFactory sessions;
 		}
 	}
 	
+	/**
+	 * Método que se encarga de obtener los documentos que no tienen párrafos traducidos en ningún idioma,
+	 * 	y lista sus nombres.
+	 * @param session
+	 * 				| Objeto SessionFactory con la sesion de hibernate abierta
+	 */
     private static void ejecutarConsultaH(Session session) {
        Transaction tx = null;
        System.out.println(" H. Obtener los nombres de los documentos que no tengan ningún párrafo traducido (en ningún idioma) ");
@@ -282,6 +345,14 @@ private static SessionFactory sessions;
        }
     }
 
+    /**
+     * Método que se encarga de obtener los documentos que no tienen párrafos sin traducir al idioma
+     * 	recibido por parámetro, y listar sus nombres.
+     * @param session
+	 * 				| Objeto SessionFactory con la sesion de hibernate abierta
+     * @param idioma
+     * 				| Un String que es el nombre del idioma para el cual se realiza la búsqueda
+     */
     private static void ejecutarConsultaI(Session session, String idioma) {
         Transaction tx = null;
         System.out.println("I.	Obtener los nombres de los documentos que tengan párrafos sin traducir al idioma de nombre enviado como parámetro.");
