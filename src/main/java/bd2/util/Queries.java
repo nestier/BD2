@@ -126,15 +126,13 @@ private static SessionFactory sessions;
 	}
 	private static void ejecutarConsultaD(Session session, Date fechaInicio, Date fechaFin) {
 		Transaction tx = null;
-		System.out.println("C.	Listar moderadores que hayan revisado alguna traducción entre dos fechas pasadas como argumento.");
+		System.out.println("D.	Listar moderadores que hayan revisado alguna traducción entre dos fechas pasadas como argumento.");
 		System.out.println("Resultado para los parámetros: "+fechaInicio+" hasta "+fechaFin);
-		Query query = session.createQuery("select distinct moderador "
-				+ " from "+Moderador.class.getName()+" moderador "
-				+ " join moderador.evaluaciones evaluacionModerador "
-				+ " where evaluacionModerador.id in "
-				+ " ( from "+Evaluacion.class.getName()+" evaluacion "
-						+ " where evaluacion.fecha between :fechaInicio and :fechaFin) ")
-						.setParameter("fechaInicio", fechaInicio).setParameter("fechaFin", fechaFin);
+        Query query = session.createQuery("from Moderador m "
+            + " where exists ( from Evaluacion e"
+            + " where e in elements(m.evaluaciones) "
+            + "and e.fecha between :fechaInicio and :fechaFin) ")
+            .setParameter("fechaInicio", fechaInicio).setParameter("fechaFin", fechaFin);
 		try {
 			tx = session.beginTransaction();
 			List<Moderador> moderadores = query.list();
@@ -157,12 +155,17 @@ private static SessionFactory sessions;
 		Transaction tx = null;
 		System.out.println("E.	Listar traducciones completas del Inglés al Francés.");
 
-		Query query = session.createQuery("select descripcion from "+Tarea.class.getName()+" traduccion"
-				+ " where traduccion.idioma.nombre = 'Francés' "
-				+ " and traduccion.completa = true "
-				+ " and exists ( from "+Parrafo.class.getName()+" parrafo "
-						+ " where parrafo.documento.idioma.nombre = 'Inglés'"
-						+ " and parrafo.id = traduccion.parrafo.id) ");
+        // Query query = session.createQuery("from Tarea t "
+        //     + " where t.idioma.nombre = 'Francés' "
+        //     + " and t.parrafo.documento.idioma.nombre = 'Inglés' "
+        //     + " and t.completa = true");
+        Query query = session.createQuery("select descripcion from Tarea traduccion"
+            + " where traduccion.idioma.nombre = 'Francés' "
+            + " and traduccion.completa = true "
+            + " and exists ( from Parrafo parrafo "
+            + " where parrafo.documento.idioma.nombre = 'Inglés'"
+            + " and parrafo.id = traduccion.parrafo.id) ");
+
 
 		try {
 			tx = session.beginTransaction();
