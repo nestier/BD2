@@ -37,6 +37,7 @@ private static SessionFactory sessions;
 			ejecutarConsultaF(session);
 			ejecutarConsultaG(session, "Leuchtturm");
 			ejecutarConsultaH(session);
+			ejecutarConsultaI(session, "Alemán");
 			
 		} catch (Exception e) {
 					e.printStackTrace();
@@ -282,5 +283,32 @@ private static SessionFactory sessions;
          if (tx != null) {
            tx.rollback();}
        }
+    }
+
+    private static void ejecutarConsultaI(Session session, String idioma) {
+        Transaction tx = null;
+        System.out.println("I.	Obtener los nombres de los documentos que tengan párrafos sin traducir al idioma de nombre enviado como parámetro.");
+        System.out.println("Resultados para el parámetro: "+idioma);
+        Query query = session.createQuery("select distinct p.documento from Parrafo p"
+                + " where p not in ( select t.parrafo from Traduccion t"
+                + " where :idioma = t.idioma.nombre)").setParameter("idioma", idioma);
+
+        try {
+            tx = session.beginTransaction();
+            List<Documento> documentos = query.list();
+            tx.commit();
+            session.flush();
+            for (Documento documento: documentos) {
+                System.out.println("El documento "+documento.getNombre()+" no esta totalmente traducido.");
+            }
+            System.out.println();
+
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (tx != null) {
+                tx.rollback();}
+        }
     }
 }
