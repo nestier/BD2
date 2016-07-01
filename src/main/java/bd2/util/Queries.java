@@ -357,10 +357,30 @@ public class Queries {
         Transaction tx = null;
         System.out.println("I.	Obtener los nombres de los documentos que tengan párrafos sin traducir al idioma de nombre enviado como parámetro.");
         System.out.println("Resultados para el parámetro: "+idioma);
-        Query query = session.createQuery("select distinct p.documento.nombre from Parrafo p"
-                + " where p not in ( select t.parrafo from Traduccion t"
-                + " where :idioma = t.idioma.nombre)").setParameter("idioma", idioma);
+        Query query = session.createQuery("select nombre from Documento d"
+                + " where exists ( from Parrafo parrafo"
+                + " where parrafo in elements(d.parrafos) and parrafo not in ( select t.parrafo from Traduccion t"
+                + " where :idioma = t.idioma.nombre))").setParameter("idioma", idioma);
 
+        // Query query = session.createQuery("select distinct documento.nombre from Parrafo p"
+        //         + " where p not in ( select t.parrafo from Traduccion t"
+        //         + " where :idioma = t.idioma.nombre)").setParameter("idioma", idioma);
+		// Query query = session.createQuery("select email from Usuario u "
+		// 		+ " where exists ( "
+		// 		+ " from Cursada cursada"
+		// 		+ " where cursada in elements(u.cursadasRealizadas)"
+		// 		+ " and not exists ( "
+		// 			+ "	from Leccion l "
+		// 			+ " where l in elements(cursada.curso.lecciones) "
+		// 			+ " and l not in ( "
+		// 				+ " from Leccion l2 "
+		// 				+ " where exists ( "
+		// 					+ " from Prueba p "
+		// 					+ " where p.puntaje >= 60 "
+		// 					+ " and p.leccion = l2 "
+		// 					+ " and p in elements(cursada.pruebas)"
+		// 					+ " and p.leccion in elements(cursada.curso.lecciones) )  "
+		// 		+ ") ) )");
         try {
             tx = session.beginTransaction();
             List<String> documentos = query.list();
